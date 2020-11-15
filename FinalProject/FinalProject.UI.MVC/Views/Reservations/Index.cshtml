@@ -1,0 +1,51 @@
+﻿@model IEnumerable<FinalProject.DATA.EF.Reservation>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="w3l-bottom-grids">
+    <div class="container-fluid px-0">
+        <h2>Index</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReservationDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CustomerAsset.AssetName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location.LocationName)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReservationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustomerAsset.AssetName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location.LocationName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ReservationID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ReservationID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ReservationID })
+                    </td>
+                </tr>
+            }
+
+        </table>
+        </div>
+</div>

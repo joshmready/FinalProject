@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNet.Identity
+
+@using FinalProject.DATA.EF
+
+@if (Request.IsAuthenticated) {
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" })) {
+        @Html.AntiForgeryToken()
+
+        #region Get logged on user and greet with User Detail information
+        //Get the current logged on user and use their ID to retrieve the associated UserDetail object
+        //Greet the user by teir firstName or FullName (instead of their UserName - emailAddress)
+
+        //connect the DB
+        ReservationSystemEntities ctx = new ReservationSystemEntities();
+
+        //get the current logged in user - byID and save the ID
+        string userID = User.Identity.GetUserId();//-comes from the Microsoft.AspNet.Identity namespace
+
+        //retreive the details
+        UserDetail currentUser = ctx.UserDetails.Where(ud => ud.UserID == userID).FirstOrDefault();
+
+        //for safety - if the user is null or not found - supply a default for the First name
+        string userFN = "Guest";
+
+        //if not null use the firstName property
+        if (currentUser != null)
+        {
+            userFN = currentUser.FirstName;//could use our fullName property here
+        }
+
+        //See below to add the New greeting
+        #endregion
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hi " + @*User.Identity.GetUserName()*@ userFN + "!", "Index", "Manage",
+                                                                         routeValues: null, htmlAttributes: new
+                                                                         {
+                                                                             title = "Manage",
+                                                                             style = "color:" +
+                                                                             (currentUser != null ? currentUser.FavoriteColor : "#FFF")
+                                                                         })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+            <li>
+                @Html.ActionLink("Your Vehicle(s)", "Create", "CustomerAssets")
+            </li>
+        </ul>
+    }
+}
+else {
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", style="color:white; padding-left: 2em"})</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", style="color:white; padding-left: 2em" })</li>
+    </ul>
+}

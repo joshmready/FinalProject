@@ -1,0 +1,19 @@
+﻿body {
+    padding-top: 80px;
+    background: black;
+}
+
+.table {
+    color: red;
+}
+a, a:hover {
+    color: white;
+}
+
+.form-control:focus {
+    background-color:white;
+}
+
+.btn {
+    color: limegreen;
+}
