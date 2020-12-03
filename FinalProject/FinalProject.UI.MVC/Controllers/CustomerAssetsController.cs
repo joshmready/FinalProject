@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using FinalProject.DATA.EF;
 using MVC3.UI.MVC.Utilities;
+using Microsoft.AspNet.Identity;
 
 namespace FinalProject.UI.MVC.Controllers
 {
@@ -17,10 +18,21 @@ namespace FinalProject.UI.MVC.Controllers
         private ReservationSystemEntities db = new ReservationSystemEntities();
 
         // GET: CustomerAssets
+        [Authorize]
         public ActionResult Index()
         {
-            var customerAssets = db.CustomerAssets.Include(c => c.UserDetail);
-            return View(customerAssets.ToList());
+            if (User.IsInRole("Customer"))
+            {
+                string currentUserID = User.Identity.GetUserId();
+                var customerAssets = db.CustomerAssets.Where(ca => ca.CustomerID == currentUserID).Include(c => c.UserDetail);
+                return View(customerAssets.ToList());
+            }
+            else
+            {
+                string currentUserID = User.Identity.GetUserId();
+                var customerAssets = db.CustomerAssets.Include(c => c.UserDetail);
+                return View(customerAssets.ToList());
+            }
         }
 
         // GET: CustomerAssets/Details/5

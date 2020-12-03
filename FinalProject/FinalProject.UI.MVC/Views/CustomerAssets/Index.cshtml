@@ -1,14 +1,17 @@
 ﻿@model IEnumerable<FinalProject.DATA.EF.CustomerAsset>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Vehicle List";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@*<div>
+    @using (Html.BeginForm("Create", "CustomerAssets", new { customerID = Model.}))
+    <input type="button" value="Create" class="btn alert-dark" />
+</div>*@
+<a href="@Url.Action("Create", "CustomerAssets")" class="btn btn-primary d-none d-sm-block btn-style mr-2 button" style="padding-left:2em; width:250px;"> Create New Vehicle</a>
+
 <table class="table">
     <tr>
         <th>
@@ -20,14 +23,14 @@
         <th>
             @Html.DisplayNameFor(model => model.SpecialNotes)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th>
+        </th>*@
+        @*<th>
             @Html.DisplayNameFor(model => model.DateAdded)
-        </th>
+        </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.UserDetail.FirstName)
+            @Html.DisplayNameFor(model => model.UserDetail.FullName)
         </th>
         <th></th>
     </tr>
@@ -38,19 +41,19 @@
             @Html.DisplayFor(modelItem => item.AssetName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.AssetPhoto)
+            <img src="~/Content/CustomImages/t_@item.AssetPhoto" />
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.SpecialNotes)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td>
+        </td>*@
+        @*<td>
             @Html.DisplayFor(modelItem => item.DateAdded)
-        </td>
+        </td>*@
         <td>
-            @Html.DisplayFor(modelItem => item.UserDetail.FirstName)
+            @Html.DisplayFor(modelItem => item.UserDetail.FullName)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.CustomerAssetID }) |

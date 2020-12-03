@@ -39,11 +39,12 @@
                                                                              title = "Manage",
                                                                              style = "color:" +
                                                                              (currentUser != null ? currentUser.FavoriteColor : "#FFF")
+                                                                             + ";padding-left: 2em"
                                                                          })
             </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()" style="color:white; padding-left: 2em">Log off</a></li>
             <li>
-                @Html.ActionLink("Your Vehicle(s)", "Create", "CustomerAssets")
+                @Html.ActionLink("Your Vehicle(s)", "Index", "CustomerAssets", routeValues: null, htmlAttributes: new { id = "loginLink", style = "color:white; padding-left: 2em" })
             </li>
         </ul>
     }

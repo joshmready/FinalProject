@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<FinalProject.DATA.EF.Reservation>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Reservations";
 }
 
 
 <div class="w3l-bottom-grids">
     <div class="container-fluid px-0">
-        <h2>Index</h2>
+        <h2>@ViewBag.Title</h2>
 
         <p>
-            @Html.ActionLink("Create New", "Create")
+            @Html.ActionLink("Create New", "Create", "Reservations", null, new { @class = "button btn btn-primary d-none d-sm-block btn-style mr-2" })
         </p>
         <table class="table">
             <tr>

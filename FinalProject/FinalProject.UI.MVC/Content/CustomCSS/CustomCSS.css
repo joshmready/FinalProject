@@ -17,3 +17,78 @@ a, a:hover {
 .btn {
     color: limegreen;
 }
+h2 {
+    padding-left: 1em;
+}
+
+#SB {
+    padding-left: 1em;
+    /*width: 1200px;*/
+}
+
+.medBox {
+    padding-left: 1em;
+    width: 800px;
+    margin: auto;
+}
+
+/*Primary custom buttons*/
+.button {
+    padding-left: 2em;
+    width: 250px;
+    margin-left: 1em;
+    margin-bottom: 10px;
+}
+
+/*#button {
+
+}*/
+
+/*Back to List custom button*/
+.BackToList {
+    padding-left: 2em;
+    width: 400px;
+}
+
+.table {
+    margin-left: 1em;
+    width: 95%;
+    border: 2px solid white;
+    
+}
+
+/*Contact Page*/
+.header {
+    color: #36A0FF;
+    font-size: 27px;
+    padding: 10px;
+}
+
+.bigicon {
+    font-size: 35px;
+    color: #36A0FF;
+}
+
+/*----------------------- Preloader -----------------------*/
+body.preloader-site {
+    overflow: hidden;
+}
+
+.preloader-wrapper {
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999999;
+}
+
+    .preloader-wrapper .preloader {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50 %, -50 %);
+        transform: translate(-50 %, -50 %);
+        width: 120px;
+    }

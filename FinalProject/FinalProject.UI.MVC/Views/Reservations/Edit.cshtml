@@ -6,46 +6,54 @@
 
 <h2>Edit</h2>
 
+<!--Uploading a file with the object to Update an EXISTING record:
+    1)Code the BeginForm()
+    2)Add a HiddenFor() for the existing image - Holds the image value if other updates are made but the image is NOT updated.
+    3)Replace the EditorFor() and ValidationMessageFor() for the BookImage with an Input Type=file
+    4)Code the EDIT POST action in the Books Controller - WE ARE USING THE ImageService. for standard file upload see MVC2 project.
+    -->
+
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Reservation</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ReservationID)
+    <h4>Reservation</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ReservationID)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CustomerAssetID, "CustomerAssetID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CustomerAssetID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CustomerAssetID, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.LocationID, "LocationID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("LocationID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.CustomerAssetID, "CustomerAssetID", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("CustomerAssetID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CustomerAssetID, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ReservationDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ReservationDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ReservationDate, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.LocationID, "LocationID", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("LocationID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ReservationDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ReservationDate, new { htmlAttributes = new { @class = "form-control", id = "ReservationDate"} })
+            @Html.ValidationMessageFor(model => model.ReservationDate, "", new { @class = "text-danger" })
         </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
     </div>
 }
 
@@ -55,4 +63,11 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            //if i had multiple fields that needed the datepicker, I could comma separate them
+            //inside of the quotes: $("#PublishDate, #SoldDate").datepicker();
+            $("#ReservationDate").datepicker();
+        });
+    </script>
 }

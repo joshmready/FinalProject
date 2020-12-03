@@ -1,16 +1,20 @@
 ﻿@model IEnumerable<FinalProject.DATA.EF.Location>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Shops and Locations";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 
 @* Add restrictions for only Admin to see and create *@
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create", "Locations", null, new { @class = "button btn btn-primary d-none d-sm-block btn-style mr-2" })
+    </p>
+    
+ }
 <table class="table">
     <tr>
         <th>
@@ -34,7 +38,8 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.LocationName)
@@ -54,12 +59,15 @@
         <td>
             @Html.DisplayFor(modelItem => item.ReservationLimit)
         </td>
+        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+        {
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.LocationID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.LocationID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.LocationID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.LocationID })|
+            @Html.ActionLink("Details", "Details", new { id = item.LocationID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.LocationID })
         </td>
+        }
     </tr>
-}
+    }
 
 </table>

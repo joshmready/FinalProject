@@ -1,4 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using FinalProject.UI.MVC.Models;
+using System;
+using System.Net;
+using System.Net.Mail;
+using System.Web.Mvc;
 
 namespace FinalProject.UI.MVC.Controllers
 {
@@ -26,5 +30,6 @@ namespace FinalProject.UI.MVC.Controllers
 
             return View();
         }
+        
     }
 }

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FinalProject.DATA.EF;
+using Microsoft.AspNet.Identity;
 
 namespace FinalProject.UI.MVC.Controllers
 {
@@ -15,10 +16,22 @@ namespace FinalProject.UI.MVC.Controllers
         private ReservationSystemEntities db = new ReservationSystemEntities();
 
         // GET: Reservations
+        [Authorize]
         public ActionResult Index()
         {
-            var reservations = db.Reservations.Include(r => r.CustomerAsset).Include(r => r.Location);
-            return View(reservations.ToList());
+            if (User.IsInRole("Customer"))
+            {
+                string currentUserID = User.Identity.GetUserId();
+                var reservations = db.Reservations.Where(r => r.CustomerAsset.CustomerID == currentUserID).Include(r => r.CustomerAsset).Include(r => r.Location);
+                return View(reservations.ToList());
+            }
+            else
+            {
+                string currentUserID = User.Identity.GetUserId();
+                var reservations = db.Reservations.Include(r => r.CustomerAsset).Include(r => r.Location);
+                return View(reservations.ToList());
+            }
+            
         }
 
         // GET: Reservations/Details/5
@@ -39,7 +52,9 @@ namespace FinalProject.UI.MVC.Controllers
         // GET: Reservations/Create
         public ActionResult Create()
         {
-            ViewBag.CustomerAssetID = new SelectList(db.CustomerAssets, "CustomerAssetID", "AssetName");
+            string currentUserID = User.Identity.GetUserId();
+
+            ViewBag.CustomerAssetID = new SelectList(db.CustomerAssets.Where(ca => ca.CustomerID == currentUserID), "CustomerAssetID", "AssetName");
             ViewBag.LocationID = new SelectList(db.Locations, "LocationID", "LocationName");
             return View();
         }
@@ -53,12 +68,46 @@ namespace FinalProject.UI.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Reservations.Add(reservation);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                //if the User is NOT an Admin
+                if (!User.IsInRole("Admin"))
+                {
+                    //find the reservation limit for this location
+                    int limit = db.Locations.Where(l => l.LocationID == reservation.LocationID).Select(l => l.ReservationLimit).Single();
+
+                    //find the number of resevations at that location ON that date
+                    int numberRes = db.Reservations.Where(r => r.LocationID == reservation.LocationID && r.ReservationDate == reservation.ReservationDate).Count();
+
+                    //check the resevation limit < nbr of reservations
+                    if (numberRes < limit)
+                    {
+                        //add the reservation
+                        db.Reservations.Add(reservation);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+
+                    }
+                    else
+                    //viewbag message that reservations are full
+                    {
+                        ViewBag.CustomerMessage = $"Sorry! It appears that we are either fully booked that day, or closed. Please choose another day we are open.";
+                    }
+
+                }
+
+                //IF THE USER IS AN ADMIN (else)
+                else
+                {
+                    db.Reservations.Add(reservation);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                
             }
 
-            ViewBag.CustomerAssetID = new SelectList(db.CustomerAssets, "CustomerAssetID", "AssetName", reservation.CustomerAssetID);
+            string currentUserID = User.Identity.GetUserId();
+
+            ViewBag.CustomerAssetID = new SelectList(db.CustomerAssets.Where(ca => ca.CustomerID == currentUserID), "CustomerAssetID", "AssetName", reservation.CustomerAssetID);
             ViewBag.LocationID = new SelectList(db.Locations, "LocationID", "LocationName", reservation.LocationID);
             return View(reservation);
         }
