@@ -18,15 +18,15 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+<div class="form-horizontal">
     <h4>Reservation</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ReservationID)
 
-
+    
     <div class="form-group">
-        @Html.LabelFor(model => model.CustomerAssetID, "CustomerAssetID", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.CustomerAssetID, "Vehicle", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("CustomerAssetID", null, htmlAttributes: new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.CustomerAssetID, "", new { @class = "text-danger" })
@@ -34,7 +34,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.LocationID, "LocationID", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.LocationID, "Location", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("LocationID", null, htmlAttributes: new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
@@ -44,17 +44,17 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ReservationDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.ReservationDate, new { htmlAttributes = new { @class = "form-control", id = "ReservationDate"} })
+            @Html.EditorFor(model => model.ReservationDate, new { htmlAttributes = new { @class = "form-control", id = "ReservationDate" } })
             @Html.ValidationMessageFor(model => model.ReservationDate, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn btn-primary d-none d-sm-block btn-style mr-2 button" style="padding-left:2em; width:250px;" value="Register" />
         </div>
     </div>
-    </div>
+</div>
 }
 
 <div>

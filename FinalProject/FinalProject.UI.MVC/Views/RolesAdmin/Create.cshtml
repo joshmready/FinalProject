@@ -1,39 +1,41 @@
 ﻿@model FinalProject.UI.MVC.Models.RoleViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create New Role";
 }
 
-<h2>Create.</h2>
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<div class="medBox">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Role.</h4>
-        <hr />
-        @Html.ValidationSummary(true)
+        <div class="form-horizontal">
+            <hr/>
+            <h4>@ViewBag.Title</h4>
+            <hr />
+            @Html.ValidationSummary(true)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Name)
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, "Role Name/Type", new { @class = "control-label col-md-6" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-primary d-none d-sm-block btn-style mr-2 button" style="padding-left:2em; width:250px;" />
+                </div>
             </div>
         </div>
+    }
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
+<div class="BackToList">
     @Html.ActionLink("Back to List", "Index")
+</div>
 </div>
 
 @section Scripts {

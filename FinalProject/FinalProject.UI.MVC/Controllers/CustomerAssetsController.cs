@@ -159,10 +159,81 @@ namespace FinalProject.UI.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CustomerAssetID,AssetName,CustomerID,AssetPhoto,SpecialNotes,IsActive,DateAdded")] CustomerAsset customerAsset)
+        public ActionResult Edit([Bind(Include = "CustomerAssetID,AssetName,CustomerID,AssetPhoto,SpecialNotes,IsActive,DateAdded")] CustomerAsset customerAsset, HttpPostedFileBase assetImage)
         {
             if (ModelState.IsValid)
             {
+
+                #region File Upload - Using the Image Service
+                //no default image to be concerned with, all records in the database should have a valid file name
+                //AND all files in the database shold be represented in the Website Content folder.
+                //if there is NO FILE in the input, maintain the existing image (Front End using the HiddenFor() field)
+
+
+
+                //branch - to make sure the input type file (HttpPostedFileBase) is NOT null (it has a file)
+                if (assetImage != null)
+                {
+
+                    //use a default image if one is not provided when the record is created - noImage.png
+                    string imgName = assetImage.FileName;
+
+                    //retrieve the image from HPFB and assign to our image variable
+                    //imgName = ProductImage.FileName; ----------------I changed this chasing an answer-------------
+
+                    //declare and assign the extension
+                    string ext = imgName.Substring(imgName.LastIndexOf('.'));
+
+                    //create a list of valid extensions
+                    string[] goodExts = { ".jpeg", ".jpg", ".gif", ".png" };
+
+                    //check the extension against the list of valid extensions and make sure the file size is 4MB or LESS (ASP.net limit)
+                    //if all requirements are met - do the following
+                    if (goodExts.Contains(ext.ToLower()) && (assetImage.ContentLength <= 4194304))//4mb in bytes
+                    {
+                        //rename the file using a GUID (Global Unique IDentifier) and concatonate with the extension.
+                        imgName = Guid.NewGuid() + ext.ToLower();//toLower() is not required, does ensure all ext's are lower case
+
+                        //other renaming options - Make sure your data type SIZE can accommodate your unique Naming convention
+                        //in the data type in the database - ours is 100,  but our title for books 150 - 
+                        //They should be unique (advantage the guid) - if not using a guid the name should be meaningfull
+
+                        //declare the var = if the title more than 10 substring the first 10, other wise use the title property
+                        //string shortTitle = book.BookTitle.Length > 10 ? book.BookTitle.Substring(0, 10) : book.BookTitle;
+                        //imgName = shortTitle + "_" + DateTime.Now + "_" + User.Identity.Name;
+                        //reassign var ShortTitle_DateAdded_UserInfo
+                        //for the user to be added, you MUST make sure the person adding a record is LOGGED IN.
+                        //regular file saving WITHOUT RESIZE
+
+                        //bookCover.SaveAs(Server.MapPath("~/Content/imgstore/books/" + imgName));
+                        //RESIZE IMAGE UTILITY
+                        //provide the path for saving the image
+                        string savePath = Server.MapPath("~/Content/CustomImages/");
+
+                        //image value for the converted image
+                        Image convertedImage = Image.FromStream(assetImage.InputStream);
+
+                        //max image size
+                        int maxImageSize = 500;
+
+                        //max thumbnail size
+                        int maxThumbSize = 100;
+
+                        //Call the imageService.ResizeImage() - (Utilities Folder)
+                        ImageService.ResizeImage(savePath, imgName, convertedImage, maxImageSize, maxThumbSize);
+
+                        //DELETE from the Image Service and delete the old image
+                        //--Image Service Makes sure the file is NOT noImage.png && that it exists on the server BEFORE deleting
+                        //we don't need to do that check
+                        ImageService.Delete(savePath, customerAsset.AssetPhoto);
+
+                        customerAsset.AssetPhoto = imgName;
+                    }
+                }
+                //No matter what - add the imgName value 
+
+                #endregion
+
                 db.Entry(customerAsset).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -193,6 +264,9 @@ namespace FinalProject.UI.MVC.Controllers
         {
             CustomerAsset customerAsset = db.CustomerAssets.Find(id);
             db.CustomerAssets.Remove(customerAsset);
+
+            ImageService.Delete(Server.MapPath("~/Content/CustomImages/"), customerAsset.AssetPhoto);
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }

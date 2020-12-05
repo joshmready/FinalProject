@@ -1,13 +1,17 @@
 ﻿@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "List of User Types";
 }
+<hr/>
+<h2>@ViewBag.Title</h2>
+<hr/>
 
-<h2>Index</h2>
-
+@*<p>
+    @Html.ActionLink("Create New", "Create", "Reservations", null, new { @class = "button btn btn-primary d-none d-sm-block btn-style mr-2" })
+</p>*@
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { @class = "button btn btn-primary d-none d-sm-block btn-style mr-2" })
 </p>
 <table class="table">
     <tr>

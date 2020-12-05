@@ -3,6 +3,11 @@
     background: black;
 }
 
+#mainContent{
+    width: 90%;
+    margin: auto;
+}
+
 .table {
     color: red;
 }
@@ -30,6 +35,11 @@ h2 {
     padding-left: 1em;
     width: 800px;
     margin: auto;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
 }
 
 /*Primary custom buttons*/

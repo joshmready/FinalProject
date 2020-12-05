@@ -101,7 +101,7 @@ namespace MVC3.UI.MVC.Utilities
             //*****update the if to reflect the: if (fileName.ToLower() == "default.jpg") below       *******
             //***********************************************************************************************
             //Skip this action if targeted file is the "default image".
-            if (fileName.ToLower() == "noimage.png")
+            if (String.IsNullOrEmpty(fileName) || fileName.ToLower() == "noimage.png")
             {
                 return;
             }

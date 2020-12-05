@@ -9,22 +9,27 @@
     <div class="container-fluid px-0">
         <h2>@ViewBag.Title</h2>
 
-        <p>
-            @Html.ActionLink("Create New", "Create", "Reservations", null, new { @class = "button btn btn-primary d-none d-sm-block btn-style mr-2" })
-        </p>
+        @if (!User.IsInRole("Employee"))
+        {
+            <p>
+                @Html.ActionLink("Create New", "Create", "Reservations", null, new { @class = "button btn btn-primary d-none d-sm-block btn-style mr-2" })
+            </p>
+        }
         <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.ReservationDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CustomerAsset.AssetName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Location.LocationName)
-                </th>
-                <th></th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ReservationDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CustomerAsset.AssetName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Location.LocationName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
 
             @foreach (var item in Model)
             {
@@ -40,12 +45,23 @@
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.ReservationID }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.ReservationID }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.ReservationID })
+                        @Html.ActionLink("Details", "Details", new { id = item.ReservationID })
+                        @if (!User.IsInRole("Employee"))
+                        {
+                            @:| @Html.ActionLink("Delete", "Delete", new { id = item.ReservationID })
+                        }
                     </td>
                 </tr>
             }
 
         </table>
-        </div>
+    </div>
 </div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+    }

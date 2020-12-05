@@ -1,4 +1,4 @@
-/*--
+﻿/*--
 Author: W3layouts
 Author URL: http://w3layouts.com
 --*/
@@ -14105,7 +14105,7 @@ input,
 select,
 label,
 li {
-  -webkit-appearance: none;
+  /*-webkit-appearance: none;*/
   outline: none;
   font-family: 'Poppins', sans-serif;
 }
